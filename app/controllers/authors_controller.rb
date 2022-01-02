@@ -7,9 +7,13 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    author = Author.create(author_params)
-
-    render json: author, status: :created
+    
+    author = Author.create!(author_params)
+    if author.valid?
+      render json: author, status: :created
+    else
+      render json: { error: author.errors.full_messages }, status: 422
+    end
   end
 
   private
